@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
-public class BlockController : MonoBehaviour
+public class BlockController : MonoBehaviourPunCallbacks
 {
+    public TurnManager TM;
     private SpriteRenderer spriteRenderer;
     public Sprite green_A;
     public Sprite green_B;
@@ -22,6 +25,7 @@ public class BlockController : MonoBehaviour
     public Sprite grey;
     private int block_no;
     public int block_type;
+    public int block_id;
 
     public bool left;
     public bool right;
@@ -29,27 +33,40 @@ public class BlockController : MonoBehaviour
     public bool down;
     public bool CrossRoad;
     public bool startingpoint;
+    private PhotonView photonView;
 
     // Start is called before the first frame update
     void Start()
     {
+        photonView = GetComponent<PhotonView>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        ChooseRandomBlockface();
+        TM = GameObject.FindWithTag("TurnManager").GetComponent<TurnManager>();
+        StartCoroutine(InitialCoroutine());
+
+        
+        
     }
 
-    // Update is called once per frame
-    void Update()
+    private System.Collections.IEnumerator InitialCoroutine()
     {
-        
+        yield return new WaitForSeconds(0.5f);
+        if (photonView.IsMine)
+        {
+            ChooseRandomBlockface();
+        }
+        yield return new WaitForSeconds(0.5f);
+        if (!photonView.IsMine)
+        {
+            SetBlockface();
+        }
+
     }
 
     private System.Collections.IEnumerator TurnEndCoroutine()
     {
-        Debug.Log("Coroutine started");
-
-        // Wait for 2 seconds
         yield return new WaitForSeconds(2f);
-        Debug.Log("Coroutine finished");
+        TM.SwitchTurn();
+
     }
 
     void ChooseRandomBlockface()
@@ -124,6 +141,65 @@ public class BlockController : MonoBehaviour
         {
             spriteRenderer.sprite = grey;
             block_type = 14;
+        }
+    }
+    void SetBlockface()
+    {
+        if (block_type == 1)
+        {
+            spriteRenderer.sprite = green_A;
+        }
+        else if (block_type == 2)
+        {
+            spriteRenderer.sprite = green_B;
+        }
+        else if (block_type == 3)
+        {
+            spriteRenderer.sprite = green_C;
+        }
+        else if (block_type == 4)
+        {
+            spriteRenderer.sprite = green_D;
+        }
+        else if (block_type == 4)
+        {
+            spriteRenderer.sprite = green_E;
+        }
+        else if (block_type == 6)
+        {
+            spriteRenderer.sprite = green_F;
+        }
+        else if (block_type == 7)
+        {
+            spriteRenderer.sprite = red_A;
+        }
+        else if (block_type == 8)
+        {
+            spriteRenderer.sprite = red_B;
+        }
+        else if (block_type == 9)
+        {
+            spriteRenderer.sprite = red_C;
+        }
+        else if (block_type == 10)
+        {
+            spriteRenderer.sprite = red_D;
+        }
+        else if (block_type == 11)
+        {
+            spriteRenderer.sprite = red_E;
+        }
+        else if (block_type == 12)
+        {
+            spriteRenderer.sprite = red_F;
+        }
+        else if (block_type == 13)
+        {
+            spriteRenderer.sprite = yellow;
+        }
+        else
+        {
+            spriteRenderer.sprite = grey;
         }
     }
     public void change_purple()
@@ -237,16 +313,14 @@ public class BlockController : MonoBehaviour
                     break;
 
             }
+            StartCoroutine(TurnEndCoroutine());
         }
-        StartCoroutine(TurnEndCoroutine());
-
-
-
-
     }
     private void OnTriggerExit2D(Collider2D other)
     {
         MoveManager MM = other.GetComponent<MoveManager>();
         MM.steps -= 1;
     }
+
+
 }

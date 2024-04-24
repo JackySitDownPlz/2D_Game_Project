@@ -8,6 +8,8 @@ TagManager:
   - CPlayer
   - Bullet
   - Arrow
+  - TurnManager
+  - Block
   layers:
   - Default
   - TransparentFX

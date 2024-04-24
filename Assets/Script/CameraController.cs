@@ -34,8 +34,12 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            cam.orthographicSize = 8;
-            transform.position = current_player.transform.position + new Vector3(0, 0, -10);
+            if(current_player != null)
+            {
+                cam.orthographicSize = 8;
+                transform.position = current_player.transform.position + new Vector3(0, 0, -10);
+            }
+            
         }
         
     }
@@ -43,4 +47,5 @@ public class CameraController : MonoBehaviour
     {
         freelook = !freelook;
     }
+
 }
