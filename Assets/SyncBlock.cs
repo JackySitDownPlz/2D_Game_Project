@@ -1,14 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 using System.Linq;
-using Photon.Realtime;
-using ExitGames.Client.Photon;
 
-public class SyncBlock : MonoBehaviourPunCallbacks
+
+public class SyncBlock : MonoBehaviour
 {
+    /*
     public GameObject gb;
-    private PhotonView photonView;
     List<int> block_type_list = new List<int>();
     // Start is called before the first frame update
     void Start()
@@ -62,4 +60,5 @@ public class SyncBlock : MonoBehaviourPunCallbacks
         }
 
     }
+    */
 }

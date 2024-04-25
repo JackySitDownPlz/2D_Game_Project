@@ -10,6 +10,8 @@ TagManager:
   - Arrow
   - TurnManager
   - Block
+  - Dialog
+  - Skill
   layers:
   - Default
   - TransparentFX

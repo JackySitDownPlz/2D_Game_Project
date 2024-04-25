@@ -52,6 +52,7 @@ public class CatController : MonoBehaviour
     }
     void FixedUpdate()
     {
+        
         //Vector2 position = rigidbody2d.position;
         //position.x = position.x + speed * horizontal * Time.deltaTime;
         //position.y = position.y + speed * vertical * Time.deltaTime;
@@ -59,13 +60,14 @@ public class CatController : MonoBehaviour
         if (move_x > 0)
         {
             Walk_Right();
-            move_x -= 1/step;
+            move_x -= 1 / step;
         }
         else if (move_x < 0)
         {
             Walk_Left();
             move_x += 1 / step;
-        }else if (move_y > 0)
+        }
+        else if (move_y > 0)
         {
             Walk_Up();
             move_y -= 1 / step;
@@ -77,14 +79,15 @@ public class CatController : MonoBehaviour
         }
         move_x = Mathf.Round(move_x * 100f) / 100f;
         move_y = Mathf.Round(move_y * 100f) / 100f;
-        
-        if (move_x == 0 && move_y == 0) 
+
+        if (move_x == 0 && move_y == 0)
         {
             Vector2 position = rigidbody2d.position;
             position.y = Mathf.Round(position.y * 10f) / 10f;
             position.x = Mathf.Round(position.x * 10f) / 10f;
             rigidbody2d.MovePosition(position);
         }
+        
     }
     public void Walk_Down()
     {

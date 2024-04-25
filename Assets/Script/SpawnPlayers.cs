@@ -28,12 +28,28 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                 
             }
             StartCoroutine(LoadingCoroutine());
+            StartCoroutine(GetListCoroutine());
         }
+        
     }
-    private void Update()
+
+    private System.Collections.IEnumerator LoadingCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        SpawnPlayer();
+    }
+
+    private System.Collections.IEnumerator GetListCoroutine()
     {
         currentPlayerIndex = TurnManager.GetComponent<TurnManager>().currentPlayerIndex;
         GetList();
+        yield return new WaitForSeconds(0.1f);
+        StartCoroutine(GetListCoroutine());
+    }
+
+    private void Update()
+    {
+
     }
 
 
@@ -82,11 +98,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         player.tag = isCurrentPlayer ? "CPlayer" : "Player";
     }
 
-    private System.Collections.IEnumerator LoadingCoroutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-        SpawnPlayer();
-    }
+
 
 
 

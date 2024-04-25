@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 
 public class DiceHandler : MonoBehaviour
@@ -16,6 +17,7 @@ public class DiceHandler : MonoBehaviour
     //public Sprite dice_four;
     //public Sprite dice_five;
     //public Sprite dice_six;
+    public int roll_result;
     public int roll_res1;
     public int roll_res2;
     public int roll_res3;
@@ -26,6 +28,8 @@ public class DiceHandler : MonoBehaviour
     public float rolltime;
     public GameObject current_player;
     private bool stopped;
+    public GameObject Inventory;
+    
 
 
 
@@ -45,6 +49,12 @@ public class DiceHandler : MonoBehaviour
         current_player = GameObject.FindGameObjectWithTag("CPlayer");
         if (roll_timer >= 0.5)
         {
+            Dice1.GetComponent<CanvasGroup>().interactable = false;
+            Dice2.GetComponent<CanvasGroup>().interactable = false;
+            Dice3.GetComponent<CanvasGroup>().interactable = false;
+            Inventory.GetComponent<CanvasGroup>().interactable = false;
+            Inventory.GetComponent<CanvasGroup>().alpha = 0f;
+
             animator1.SetBool("Roll", true);
             animator2.SetBool("Roll", true);
             animator3.SetBool("Roll", true);
@@ -62,9 +72,9 @@ public class DiceHandler : MonoBehaviour
         else if (roll_timer <= 0 && !stopped)
         {
             MoveManager MM = current_player.GetComponent<MoveManager>();
-            MM.steps = roll_res1+roll_res2+roll_res3;
+            roll_result = roll_res1 + roll_res2 + roll_res3;
+            MM.steps = roll_result;
             stopped = true;
-
         }
 
         

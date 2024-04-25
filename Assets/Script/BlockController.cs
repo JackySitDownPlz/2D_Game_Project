@@ -33,106 +33,87 @@ public class BlockController : MonoBehaviourPunCallbacks
     public bool down;
     public bool CrossRoad;
     public bool startingpoint;
-    private PhotonView photonView;
+    public bool invisible;
+    public GameObject Dialog;
 
     // Start is called before the first frame update
     void Start()
     {
-        photonView = GetComponent<PhotonView>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         TM = GameObject.FindWithTag("TurnManager").GetComponent<TurnManager>();
-        StartCoroutine(InitialCoroutine());
+        ChooseRandomBlockface();
 
-        
-        
-    }
-
-    private System.Collections.IEnumerator InitialCoroutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-        if (photonView.IsMine)
-        {
-            ChooseRandomBlockface();
-        }
-        yield return new WaitForSeconds(0.5f);
-        if (!photonView.IsMine)
-        {
-            SetBlockface();
-        }
 
     }
-
-    private System.Collections.IEnumerator TurnEndCoroutine()
+    void Update()
     {
-        yield return new WaitForSeconds(2f);
-        TM.SwitchTurn();
 
     }
 
     void ChooseRandomBlockface()
     {
         block_no = Random.Range(1, 100);
-        if (block_no <= 7)
+        if (block_no <= 14)
         {
             spriteRenderer.sprite = green_A;
             block_type = 1;
         }
-        else if (block_no <= 12)
+        else if (block_no <= 23)
         {
             spriteRenderer.sprite = green_B;
             block_type = 2;
         }
-        else if (block_no <= 15)
+        else if (block_no <= 27)
         {
             spriteRenderer.sprite = green_C;
             block_type = 3;
         }
-        else if (block_no <= 17)
+        else if (block_no <= 30)
         {
             spriteRenderer.sprite = green_D;
             block_type = 4;
         }
-        else if (block_no <= 25)
+        else if (block_no <= 39)
         {
             spriteRenderer.sprite = green_E;
             block_type = 5;
         }
-        else if (block_no <= 30)
+        else if (block_no <= 44)
         {
             spriteRenderer.sprite = green_F;
             block_type = 6;
         }
-        else if (block_no <= 36)
+        else if (block_no <= 50)
         {
             spriteRenderer.sprite = red_A;
             block_type = 7;
         }
-        else if (block_no <= 39)
+        else if (block_no <= 53)
         {
             spriteRenderer.sprite = red_B;
             block_type = 8;
         }
-        else if (block_no <= 40)
+        else if (block_no <= 54)
         {
             spriteRenderer.sprite = red_C;
             block_type = 9;
         }
-        else if (block_no <= 41)
+        else if (block_no <= 56)
         {
             spriteRenderer.sprite = red_D;
             block_type = 10;
         }
-        else if (block_no <= 47)
+        else if (block_no <= 66)
         {
-            spriteRenderer.sprite= red_E;
+            spriteRenderer.sprite = red_E;
             block_type = 11;
         }
-        else if (block_no <= 50)
+        else if (block_no <= 70)
         {
             spriteRenderer.sprite = red_F;
             block_type = 12;
         }
-        else if (block_no <= 60)
+        else if (block_no <= 90)
         {
             spriteRenderer.sprite = yellow;
             block_type = 13;
@@ -142,64 +123,11 @@ public class BlockController : MonoBehaviourPunCallbacks
             spriteRenderer.sprite = grey;
             block_type = 14;
         }
-    }
-    void SetBlockface()
-    {
-        if (block_type == 1)
-        {
-            spriteRenderer.sprite = green_A;
-        }
-        else if (block_type == 2)
-        {
-            spriteRenderer.sprite = green_B;
-        }
-        else if (block_type == 3)
-        {
-            spriteRenderer.sprite = green_C;
-        }
-        else if (block_type == 4)
-        {
-            spriteRenderer.sprite = green_D;
-        }
-        else if (block_type == 4)
-        {
-            spriteRenderer.sprite = green_E;
-        }
-        else if (block_type == 6)
-        {
-            spriteRenderer.sprite = green_F;
-        }
-        else if (block_type == 7)
-        {
-            spriteRenderer.sprite = red_A;
-        }
-        else if (block_type == 8)
-        {
-            spriteRenderer.sprite = red_B;
-        }
-        else if (block_type == 9)
-        {
-            spriteRenderer.sprite = red_C;
-        }
-        else if (block_type == 10)
-        {
-            spriteRenderer.sprite = red_D;
-        }
-        else if (block_type == 11)
-        {
-            spriteRenderer.sprite = red_E;
-        }
-        else if (block_type == 12)
-        {
-            spriteRenderer.sprite = red_F;
-        }
-        else if (block_type == 13)
-        {
-            spriteRenderer.sprite = yellow;
-        }
-        else
+
+        if (startingpoint)
         {
             spriteRenderer.sprite = grey;
+            block_type = 14;
         }
     }
     public void change_purple()
@@ -209,7 +137,17 @@ public class BlockController : MonoBehaviourPunCallbacks
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        
+
         CatController CC = other.GetComponent<CatController>();
+        MoveManager MM = other.GetComponent<MoveManager>();
+        PlayerInfo PI = other.GetComponent<PlayerInfo>();
+
+        if (invisible)
+        {
+            MM.inv_steps += 1;
+        }
+
         if (CC != null)
         {
             CC.OnBlockType = block_type;
@@ -254,9 +192,13 @@ public class BlockController : MonoBehaviourPunCallbacks
                 CC.CrossRoad = false;
             }
         }
-        MoveManager MM = other.GetComponent<MoveManager>();
-        PlayerInfo PI = other.GetComponent<PlayerInfo>();
-        if (MM.steps<= 0 && !startingpoint)
+        if (block_type == 15)
+        {
+            MM.interacting = true;
+            Dialog.SetActive(true);
+
+        }
+        if (MM.steps <= 0 && !startingpoint && !invisible)
         {
             switch (block_type)
             {
@@ -297,30 +239,44 @@ public class BlockController : MonoBehaviourPunCallbacks
                     PI.HP -= 5;
                     break;
                 case 13:
-                    int random = Random.Range(1, 9);
-                    if (random < 9)
-                    {
-                        PI.items[random] += 1;
-                    }
-                    else
-                    {
-
-                    }
+                    int random = Random.Range(0, 8);
+                    PI.items[random] += 1;
+                    break;
+                case 14:
                     break;
                 case 15:
-                    break; ;
-                default:
                     break;
-
             }
-            StartCoroutine(TurnEndCoroutine());
+            StartCoroutine(TurnEndCoroutine(MM));
         }
     }
+
     private void OnTriggerExit2D(Collider2D other)
     {
         MoveManager MM = other.GetComponent<MoveManager>();
-        MM.steps -= 1;
+        if (!invisible)
+        {
+            MM.steps -= 1;
+        }
+        else
+        {
+            MM.inv_steps -= 1;
+        }
+        
+
     }
 
-
+    private System.Collections.IEnumerator TurnEndCoroutine(MoveManager MM)
+    {
+        yield return new WaitForSeconds(1.5f);
+        if (MM.interacting)
+        {
+            StartCoroutine(TurnEndCoroutine(MM));
+        }
+        else
+        {
+            TM.SwitchTurn();
+        }
+        
+    }
 }

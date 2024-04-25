@@ -42,8 +42,5 @@ public class InventoryController : MonoBehaviour
                 }
             }
         }
-        
     }
-
-    
 }

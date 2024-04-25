@@ -5,10 +5,12 @@ using UnityEngine;
 public class MoveManager : MonoBehaviour
 {
     public int steps;
+    public int inv_steps;
     CatController CC;
     public bool choosingDirection;
     private ArrowControl AC;
-    
+    public bool interacting;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +23,11 @@ public class MoveManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (steps > 0 && CC.move_x == 0 && CC.move_y == 0 && !choosingDirection)
+        if (interacting)
+        {
+
+        }
+        else if ((inv_steps > 0 || steps > 0) && CC.move_x == 0 && CC.move_y == 0 && !choosingDirection)
         {
             if (!CC.CrossRoad)
             {
@@ -48,6 +54,11 @@ public class MoveManager : MonoBehaviour
                 choosingDirection = true;
             }
         }
+        else if (steps < 0)
+        {
+            steps = 0;
+        }
+        
     }
     void ChooseDirection()
     {
@@ -87,7 +98,3 @@ public class MoveManager : MonoBehaviour
     
 
 }
-
-/*
-
-*/

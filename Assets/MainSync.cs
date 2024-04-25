@@ -14,9 +14,17 @@ public class MainSync : MonoBehaviour
     {
 
         photonView = GetComponent<PhotonView>();
-        
+        StartCoroutine(InitialCoroutine());
+
     }
 
+    private System.Collections.IEnumerator InitialCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(LoadingCoroutine());
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(UpdateCoroutine());
+    }
     private System.Collections.IEnumerator LoadingCoroutine()
     {
         yield return new WaitForSeconds(1f);
@@ -30,13 +38,25 @@ public class MainSync : MonoBehaviour
             GetList();
             GetTag();
         }
-            
+        StartCoroutine(LoadingCoroutine());
     }
 
-    // Update is called once per frame
-    void Update()
+    private System.Collections.IEnumerator UpdateCoroutine()
     {
-        StartCoroutine(LoadingCoroutine());
+        yield return new WaitForSeconds(1f);
+        photonView = GameObject.FindWithTag("CPlayer").GetComponent<PhotonView>();
+        StartCoroutine(UpdateCoroutine());
+    }
+    
+    public GameObject[] GetAllPlayer()
+    {
+        GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("Player");
+        //Debug.Log("AllPlayers: "+AllPlayers.Length);
+        GameObject[] AllCPlayers = GameObject.FindGameObjectsWithTag("CPlayer");
+        //Debug.Log("AllCPlayers: " + AllCPlayers.Length);
+        GameObject[] All = AllPlayers.Concat(AllCPlayers).ToArray();
+        //Debug.Log("All: " + All.Length);
+        return All;
     }
 
     private void SaveList()
@@ -91,12 +111,12 @@ public class MainSync : MonoBehaviour
     private void SaveTag()
     {
         GameObject[] players = GetAllPlayer();
-        Debug.Log(players.Length);
+        //Debug.Log(players.Length);
         foreach (GameObject player in players)
         {
             Hashtable table = new Hashtable();
             table[player.GetComponent<PlayerInfo>().playerID+"_tag"] = player.tag;
-            Debug.Log(player.tag);
+            //Debug.Log(player.tag);
             PhotonNetwork.CurrentRoom.SetCustomProperties(table);
         }
     }
@@ -110,16 +130,6 @@ public class MainSync : MonoBehaviour
         }
     }
 
-    public GameObject[] GetAllPlayer()
-    {
-        GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("Player");
-        //Debug.Log("AllPlayers: "+AllPlayers.Length);
-        GameObject[] AllCPlayers = GameObject.FindGameObjectsWithTag("CPlayer");
-        //Debug.Log("AllCPlayers: " + AllCPlayers.Length);
-        GameObject[] All = AllPlayers.Concat(AllCPlayers).ToArray();
-        //Debug.Log("All: " + All.Length);
-        return All;
-    }
 
 
     

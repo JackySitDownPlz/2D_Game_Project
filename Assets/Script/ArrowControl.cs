@@ -73,6 +73,14 @@ public class ArrowControl : MonoBehaviour
         }
     }
 
+    private void DisableArrows()
+    {
+        hideArrow("up");
+        hideArrow("down");
+        hideArrow("left");
+        hideArrow("right");
+    }
+
     public void ChooseUp()
     {
         DisableArrows();
@@ -97,13 +105,7 @@ public class ArrowControl : MonoBehaviour
         CC.MoveDirection(4);
         MM.choosingDirection = false;
     }
-    void DisableArrows()
-    {
-        hideArrow("up");
-        hideArrow("down");
-        hideArrow("left");
-        hideArrow("right");
-    }
+    
 
 
 }
