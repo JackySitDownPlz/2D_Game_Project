@@ -31,6 +31,8 @@ public class Minigame2_PlayerController : MonoBehaviour
 
     public static bool endGame;
 
+    public AudioClip jump;
+
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
@@ -76,6 +78,7 @@ public class Minigame2_PlayerController : MonoBehaviour
             if (Input.GetAxis("Player1Jump") > 0f && isTouchingGround)
             {
                 player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+                GameObject.FindWithTag("CharSound").GetComponent<AudioSource>().PlayOneShot(jump);
             }
         }
 
@@ -113,6 +116,7 @@ public class Minigame2_PlayerController : MonoBehaviour
             if (Input.GetAxis("Player2Jump") > 0f && isTouchingGround)
             {
                 player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+                GameObject.FindWithTag("CharSound").GetComponent<AudioSource>().PlayOneShot(jump);
             }
         }
 
@@ -150,6 +154,7 @@ public class Minigame2_PlayerController : MonoBehaviour
             if (Input.GetAxis("Player3Jump") > 0f && isTouchingGround)
             {
                 player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+                GameObject.FindWithTag("CharSound").GetComponent<AudioSource>().PlayOneShot(jump);
             }
         }
 
@@ -187,6 +192,7 @@ public class Minigame2_PlayerController : MonoBehaviour
             if (Input.GetAxis("Player4Jump") > 0f && isTouchingGround)
             {
                 player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+                GameObject.FindWithTag("CharSound").GetComponent<AudioSource>().PlayOneShot(jump);
             }
         }
     }

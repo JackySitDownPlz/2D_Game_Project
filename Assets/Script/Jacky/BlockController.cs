@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
 using Photon.Pun;
+using TMPro;
 
 public class BlockController : MonoBehaviourPunCallbacks
 {
@@ -35,7 +36,12 @@ public class BlockController : MonoBehaviourPunCallbacks
     public bool startingpoint;
     public bool invisible;
     public GameObject Dialog;
-    
+    public AudioClip hurt;
+    public AudioClip heal;
+    public AudioClip get;
+    public AudioClip lose;
+    public AudioClip item;
+
 
     // Start is called before the first frame update
     void Start()
@@ -98,7 +104,7 @@ public class BlockController : MonoBehaviourPunCallbacks
         }
     }
 
-    void ChooseRandomBlockface()
+    public void ChooseRandomBlockface()
     {
         block_no = Random.Range(1, 100);
         if (block_no <= 14)
@@ -224,7 +230,7 @@ public class BlockController : MonoBehaviourPunCallbacks
                 CC.CrossRoad = false;
             }
         }
-        if (block_type == 15)
+        if (block_type == 15 && MM.CanInteractWithBlock)
         {
             MM.interacting = true;
             Dialog.SetActive(true);
@@ -236,43 +242,75 @@ public class BlockController : MonoBehaviourPunCallbacks
             {
                 case 1:
                     PI.catfood += 1;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player Gains 1 CatFood!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(get);
                     break;
                 case 2:
                     PI.catfood += 3;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player Gains 3 CatFood!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(get);
                     break;
                 case 3:
                     PI.catfood += 5;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player Gains 5 CatFood!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(get);
                     break;
                 case 4:
                     PI.HP += 7;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player HP Is Increased By 7!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(heal);
                     break;
                 case 5:
                     PI.HP += 3;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player HP Is Increased By 3!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(heal);
                     break;
                 case 6:
                     PI.HP += 5;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player HP Is Increased By 5!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(heal);
                     break;
                 case 7:
                     PI.catfood -= 1;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player Loses 1 CatFood!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(lose);
                     break;
                 case 8:
                     PI.catfood -= 3;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player Loses 3 CatFood!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(lose);
                     break;
                 case 9:
                     PI.catfood -= 5;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player Loses 5 CatFood!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(lose);
                     break;
                 case 10:
                     PI.HP -= 7;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player HP Is Decreased By 7!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(hurt);
+                    other.GetComponent<Animator>().SetBool("TakeDamage", true);
+                    StartCoroutine(HurtCoroutine(other));
                     break;
                 case 11:
                     PI.HP -= 3;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player HP Is Decreased By 3!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(hurt);
+                    other.GetComponent<Animator>().SetBool("TakeDamage", true);
+                    StartCoroutine(HurtCoroutine(other));
                     break;
                 case 12:
                     PI.HP -= 5;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player HP Is Decreased By 5!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(hurt);
+                    other.GetComponent<Animator>().SetBool("TakeDamage", true);
+                    StartCoroutine(HurtCoroutine(other));
                     break;
                 case 13:
                     int random = Random.Range(0, 8);
                     PI.items[random] += 1;
+                    GameObject.FindWithTag("Notice").GetComponent<TMP_Text>().text = "Player Gets A Random Skill!";
+                    GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(item);
                     break;
                 case 14:
                     break;
@@ -311,5 +349,11 @@ public class BlockController : MonoBehaviourPunCallbacks
             TM.SwitchTurn();
         }
         
+    }
+
+    private System.Collections.IEnumerator HurtCoroutine(Collider2D other)
+    {
+        yield return new WaitForSeconds(1f);
+        other.GetComponent<Animator>().SetBool("TakeDamage", false);
     }
 }

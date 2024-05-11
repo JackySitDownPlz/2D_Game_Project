@@ -6,9 +6,39 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/StartScene.unity
+    guid: 1ec86c8e4b9ce4d4188a6f8346707f54
+  - enabled: 1
     path: Assets/Scenes/village_day.unity
     guid: 16a15f8f5500a614eb294b01582b2763
   - enabled: 1
     path: Assets/Scenes/Minigame1.unity
     guid: 0ac4a242bb3c6f440829a751ca449740
+  - enabled: 1
+    path: Assets/Scenes/Minigame2.unity
+    guid: b562ed488bb27d94aa06e302546fb6a8
+  - enabled: 1
+    path: Assets/Scenes/Minigame3.unity
+    guid: 0d61b455c720f1e408a2396d1f2c6c52
+  - enabled: 1
+    path: Assets/Scenes/PreGameScene_1.unity
+    guid: b9397e0f224855a49b92e8de2b77c190
+  - enabled: 1
+    path: Assets/Scenes/PreGameScene_2.unity
+    guid: 2200a9d5a1d589a42b43d9304be5714b
+  - enabled: 1
+    path: Assets/Scenes/PreGameScene_3.unity
+    guid: 1ca5d721f72a8674b95b73a84c235669
+  - enabled: 1
+    path: Assets/Scenes/BeginGame_1.unity
+    guid: 3267f16e2021858449378a7401ac3100
+  - enabled: 1
+    path: Assets/Scenes/BeginGame_2.unity
+    guid: 7d10e5f7f5cf60c46a293c5940281c6c
+  - enabled: 1
+    path: Assets/Scenes/BeginGame_3.unity
+    guid: 55fc3082238cb9e4ab32657efea34f4c
+  - enabled: 1
+    path: Assets/Scenes/EndGame.unity
+    guid: c458c6b6863cb0f45b7d360edab44041
   m_configObjects: {}

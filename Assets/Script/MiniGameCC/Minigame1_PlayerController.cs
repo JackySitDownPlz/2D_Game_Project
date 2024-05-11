@@ -24,6 +24,7 @@ public class Minigame1_PlayerController : MonoBehaviour
     Vector2 lookDirection = new Vector2(1, 0);
 
     public static bool endGame;
+    public AudioClip get;
 
     void Start()
     {
@@ -152,6 +153,7 @@ public class Minigame1_PlayerController : MonoBehaviour
 
     public void AddScore(int scoreValue)
     {
+        GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(get);
         score += scoreValue;
     }
 

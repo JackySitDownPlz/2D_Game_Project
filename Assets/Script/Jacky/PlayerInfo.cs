@@ -11,9 +11,16 @@ public class PlayerInfo : MonoBehaviour
     public int catnip;
     public int[] items;
     public Animator anim;
+    public int Speed;
+    public int NSpeed;
+    public bool slept;
+    public bool shielded;
+    public AudioClip s_died;
     // Start is called before the first frame update
     void Start()
     {
+        Speed = 1;
+        NSpeed = 1;
         anim = GetComponent<Animator>();
         HP = 20;
         catfood = 0;
@@ -35,14 +42,19 @@ public class PlayerInfo : MonoBehaviour
         {
             catfood -= 10;
             HP = 20;
+            GameObject.FindWithTag("CharSound").GetComponent<AudioSource>().PlayOneShot(s_died);
             anim.SetBool("Death", true);
             StartCoroutine(DeathCoroutine());
 
         }
+        if (catnip >= 5)
+        {
+            GameObject.FindWithTag("TurnManager").GetComponent<TurnManager>().PlayerReachedGoal = true;
+        }
     }
     private System.Collections.IEnumerator DeathCoroutine()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         anim.SetBool("Death", false);
     }
 

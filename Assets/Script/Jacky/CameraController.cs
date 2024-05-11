@@ -14,6 +14,8 @@ public class CameraController : MonoBehaviour
     public GameObject[] UIButtons;
     public GameObject Inventory;
     private bool busy;
+    public bool wide;
+    public bool laser;
     
     // Start is called before the first frame update
     void Start()
@@ -21,6 +23,7 @@ public class CameraController : MonoBehaviour
         busy = false;
         freelook = false;
         cam = GetComponent<Camera>();
+        wide = false;
     }
 
     // Update is called once per frame
@@ -37,18 +40,32 @@ public class CameraController : MonoBehaviour
             }
             if (freelook)
             {
-                
                 cam.orthographicSize = 10;
                 transform.position = transform.position + new Vector3(horizontal * Time.deltaTime * CameraSpeed, vertical * Time.deltaTime * CameraSpeed, 0);
 
             }
+            
             else
             {
                 
                 if (current_player != null)
                 {
-                    cam.orthographicSize = 8;
-                    transform.position = current_player.transform.position + new Vector3(0, 0, -10);
+                    if (wide)
+                    {
+                        cam.orthographicSize = 11;
+                        transform.position = current_player.transform.position + new Vector3(0, 0, -10);
+                    }
+                    else if (laser)
+                    {
+                        cam.orthographicSize = 30;
+                        transform.position = new Vector3(4, -11, -11);
+                    }
+                    else
+                    {
+                        cam.orthographicSize = 8;
+                        transform.position = current_player.transform.position + new Vector3(0, 0, -10);
+                    }
+                    
                 }
 
             }

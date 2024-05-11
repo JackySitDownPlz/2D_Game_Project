@@ -31,6 +31,11 @@ public class Minigame1_Leaderboard : MonoBehaviour
 
     public string nextScene;
 
+    public GameObject[] playerSkinList;
+
+    public AudioClip won;
+    private bool played;
+
     void Start()
     {
         InvokeRepeating(nameof(Refresh), 1f, refreshRate);
@@ -42,6 +47,7 @@ public class Minigame1_Leaderboard : MonoBehaviour
         {
             noOfPlayers = 4;
         }
+        played = false;
     }
 
     public void Refresh()
@@ -89,7 +95,7 @@ public class Minigame1_Leaderboard : MonoBehaviour
         {
             showWinner.SetActive(true);
 
-            if (scoreTexts[0].text == scoreTexts[1].text && scoreTexts[0].text == scoreTexts[3].text && scoreTexts[0].text == scoreTexts[4].text)
+            if (scoreTexts[0].text == scoreTexts[1].text && scoreTexts[0].text == scoreTexts[2].text && scoreTexts[0].text == scoreTexts[3].text)
             {
                 winnerName = nameTexts[0].text;
                 swinnerName = nameTexts[1].text;
@@ -98,7 +104,7 @@ public class Minigame1_Leaderboard : MonoBehaviour
                 winnerNameText.text = winnerName + "/" + swinnerName + "/" + twinnerName + "/" + fwinnerName;
                 PlayerStaticData.winnerNo = 4;
             }
-            else if(scoreTexts[0].text == scoreTexts[1].text && scoreTexts[0].text == scoreTexts[3].text)
+            else if(scoreTexts[0].text == scoreTexts[1].text && scoreTexts[0].text == scoreTexts[2].text)
             {
                 winnerName = nameTexts[0].text;
                 swinnerName = nameTexts[1].text;
@@ -125,21 +131,44 @@ public class Minigame1_Leaderboard : MonoBehaviour
                 winnerNameText.text = winnerName;
                 PlayerStaticData.winnerNo = 1;
             }
-            
 
+            if (winnerName == "P1")
+            {
+                playerSkinList[0].SetActive(true);
+            }
+            else if (winnerName == "P2")
+            {
+                playerSkinList[1].SetActive(true);
+            }
+            else if (winnerName == "P3")
+            {
+                playerSkinList[2].SetActive(true);
+            }
+            else if (winnerName == "P4")
+            {
+                playerSkinList[3].SetActive(true);
+            }
+            
 
             PlayerStaticData.winner = int.Parse(winnerName[1].ToString());
             PlayerStaticData.swinner = int.Parse(swinnerName[1].ToString());
             PlayerStaticData.twinner = int.Parse(twinnerName[1].ToString());
             PlayerStaticData.fwinner = int.Parse(fwinnerName[1].ToString());
             StartCoroutine(changeScene(nextScene));
+
+            if (!played)
+            {
+                GameObject.FindWithTag("SoundEffect").GetComponent<AudioSource>().PlayOneShot(won);
+                played = true;
+            }
+            
+
         }
     }
     IEnumerator changeScene(string scene)
     {
-
         yield return new WaitForSeconds(3f);
-
+        GameObject.FindWithTag("Music").GetComponent<AudioSource>().Stop();
         SceneManager.LoadScene(scene);
     }
 

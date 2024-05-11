@@ -25,4 +25,16 @@ public class PurpleChooser : MonoBehaviour
         }
         
     }
+
+    public void SwitchBlock()
+    {
+        for (int i = 0;i< blocks.Length;i++)
+        {
+            if (blocks[i].GetComponent<BlockController>().block_type == 15)
+            {
+                blocks[i].GetComponent<BlockController>().ChooseRandomBlockface();
+            }
+        }
+        purple_exist = false;
+    }
 }

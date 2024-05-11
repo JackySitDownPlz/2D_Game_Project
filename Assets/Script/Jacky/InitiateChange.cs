@@ -16,6 +16,8 @@ public class InitiateChange : MonoBehaviour
     List<int> BlockController_int;
     int TurnManager_int;
     bool PurpleChooser_bool;
+    public GameObject cloud_blocker;
+    bool cloudmove;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,12 +29,13 @@ public class InitiateChange : MonoBehaviour
         BlockController_int = new List<int>();
         TurnManager_int = 0;
         PurpleChooser_bool = false;
-
+        cloudmove = false;
+        StartCoroutine(CloudCoroutine());
         if (PlayerStaticData.save_no > 1)
         {
 
             StartCoroutine(ReloadCoroutine());
-            
+
         }
         
     }
@@ -40,11 +43,19 @@ public class InitiateChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (cloudmove)
+        {
+            cloud_blocker.GetComponent<CanvasGroup>().alpha -= 0.01f;
+        }
     }
 
     public void SaveChange()
     {
+        Player_int = new List<List<int>>();
+        Player_bool = new List<List<bool>>();
+        Player_inta = new List<int[]>();
+        Transform_Vector3 = new List<Vector3>();
+        BlockController_int = new List<int>();
         foreach (var player in players)
         {
             List<int> player_data = new List<int>();
@@ -54,6 +65,7 @@ public class InitiateChange : MonoBehaviour
             player_data.Add(player.GetComponent<PlayerInfo>().catfood);
             player_data.Add(player.GetComponent<PlayerInfo>().catnip);
             Player_int.Add(player_data);
+            Debug.Log("saveDataCount:"+Player_int.Count);
         }
         foreach (var player in players)
         {
@@ -127,6 +139,7 @@ public class InitiateChange : MonoBehaviour
         yield return new WaitForSeconds(1f);
         GetChange();
         Debug.Log("Loaded: " + PlayerStaticData.save_no);
+        yield return new WaitForSeconds(1f);
         if (PlayerStaticData.winnerNo > 0)
         {
             if (PlayerStaticData.winnerNo == 1)
@@ -147,10 +160,10 @@ public class InitiateChange : MonoBehaviour
             }
             else if (PlayerStaticData.winnerNo == 4)
             {
-                players[PlayerStaticData.winner - 1].GetComponent<PlayerInfo>().catfood += 7;
-                players[PlayerStaticData.swinner - 1].GetComponent<PlayerInfo>().catfood += 7;
-                players[PlayerStaticData.twinner - 1].GetComponent<PlayerInfo>().catfood += 7;
-                players[PlayerStaticData.fwinner - 1].GetComponent<PlayerInfo>().catfood += 7;
+                players[PlayerStaticData.winner - 1].GetComponent<PlayerInfo>().catfood += 2;
+                players[PlayerStaticData.swinner - 1].GetComponent<PlayerInfo>().catfood += 2;
+                players[PlayerStaticData.twinner - 1].GetComponent<PlayerInfo>().catfood += 2;
+                players[PlayerStaticData.fwinner - 1].GetComponent<PlayerInfo>().catfood += 2;
             }
             foreach (var player in players)
             {
@@ -158,5 +171,14 @@ public class InitiateChange : MonoBehaviour
             }
         }
 
+    }
+
+    private System.Collections.IEnumerator CloudCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        cloudmove = true;
+        yield return new WaitForSeconds(5f);
+        cloudmove = false;
+        
     }
 }

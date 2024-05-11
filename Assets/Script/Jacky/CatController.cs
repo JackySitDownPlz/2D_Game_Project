@@ -21,6 +21,10 @@ public class CatController : MonoBehaviour
     public int OnBlockType;
     public int WalkStep;
     public bool CrossRoad;
+    private bool walking;
+    public AudioSource AS;
+    public AudioClip Aclip;
+    
 
 
 
@@ -31,6 +35,7 @@ public class CatController : MonoBehaviour
         animator = GetComponent<Animator>();
         step = 50;
         back_direction = 1;
+        walking = false;
     }
 
     // Update is called once per frame
@@ -49,7 +54,30 @@ public class CatController : MonoBehaviour
         animator.SetFloat("Look X", lookDirection.x);
         animator.SetFloat("Look Y", lookDirection.y);
         animator.SetFloat("Speed", move.magnitude);
+
+        if ((move_x != 0 || move_y != 0) && !walking)
+        {
+            Debug.Log("Walking");
+            StartCoroutine(SoundCoroutine());
+            walking = true;
+        }
+
     }
+
+    private System.Collections.IEnumerator SoundCoroutine()
+    {
+        AS.PlayOneShot(Aclip);
+        yield return new WaitForSeconds(0.5f);
+        if(move_x * move_y != 0)
+        {
+            StartCoroutine(SoundCoroutine());
+        }
+        else
+        {
+            walking = false;
+        }
+    }
+
     void FixedUpdate()
     {
         

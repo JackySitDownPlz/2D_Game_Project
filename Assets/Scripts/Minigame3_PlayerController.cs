@@ -20,6 +20,8 @@ public class Minigame3_PlayerController : MonoBehaviour
 
     public static bool endGame;
 
+    public AudioClip jump;
+
     void Start()
     {
         _transform = this.transform;
@@ -53,12 +55,10 @@ public class Minigame3_PlayerController : MonoBehaviour
             if (Input.GetKey(KeyCode.A))
             {
                 _transform.position += Vector3.left * speed * Time.deltaTime;
-                
             }
             if (Input.GetKey(KeyCode.D))
             {
                 _transform.position += Vector3.right * speed * Time.deltaTime;
-                
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
@@ -66,28 +66,30 @@ public class Minigame3_PlayerController : MonoBehaviour
                 {
                     _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
                     jumpAbility--;
+                    GameObject.FindWithTag("CharSound").GetComponent<AudioSource>().PlayOneShot(jump);
                 }
             }
         }
 
         if (playerID == 2)
         {
-            if (Input.GetKey(KeyCode.V))
+            if (Input.GetKey(KeyCode.F))
             {
                 _transform.position += Vector3.left * speed * Time.deltaTime;
 
             }
-            if (Input.GetKey(KeyCode.B))
+            if (Input.GetKey(KeyCode.H))
             {
                 _transform.position += Vector3.right * speed * Time.deltaTime;
 
             }
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.T))
             {
                 if (jumpAbility > 0)
                 {
                     _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
                     jumpAbility--;
+                    GameObject.FindWithTag("CharSound").GetComponent<AudioSource>().PlayOneShot(jump);
                 }
             }
         }
@@ -110,6 +112,7 @@ public class Minigame3_PlayerController : MonoBehaviour
                 {
                     _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
                     jumpAbility--;
+                    GameObject.FindWithTag("CharSound").GetComponent<AudioSource>().PlayOneShot(jump);
                 }
             }
         }
@@ -132,6 +135,7 @@ public class Minigame3_PlayerController : MonoBehaviour
                 {
                     _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
                     jumpAbility--;
+                    GameObject.FindWithTag("CharSound").GetComponent<AudioSource>().PlayOneShot(jump);
                 }
             }
         }

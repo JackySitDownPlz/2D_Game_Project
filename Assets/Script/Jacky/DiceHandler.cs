@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 
 public class DiceHandler : MonoBehaviour
@@ -29,7 +30,6 @@ public class DiceHandler : MonoBehaviour
     public GameObject current_player;
     private bool stopped;
     public GameObject Inventory;
-    
 
 
 
@@ -73,9 +73,18 @@ public class DiceHandler : MonoBehaviour
         {
             MoveManager MM = current_player.GetComponent<MoveManager>();
             roll_result = roll_res1 + roll_res2 + roll_res3;
-            MM.steps = roll_result;
+            double final_res = roll_result * current_player.GetComponent<PlayerInfo>().Speed / current_player.GetComponent<PlayerInfo>().NSpeed;
+            MM.steps = (int)Math.Floor((double)final_res);
             MM.CanInteractWithBlock = true;
             stopped = true;
+            if (current_player.GetComponent<PlayerInfo>().Speed != 1)
+            {
+                current_player.GetComponent<PlayerInfo>().Speed = 1;
+            }
+            if (current_player.GetComponent<PlayerInfo>().NSpeed != 1)
+            {
+                current_player.GetComponent<PlayerInfo>().Speed = 1;
+            }
         }
 
         
@@ -83,9 +92,9 @@ public class DiceHandler : MonoBehaviour
     public void RollDice()
     {
         roll_timer = rolltime;
-        roll_res1 = Random.Range(1, 7);
-        roll_res2 = Random.Range(1, 7);
-        roll_res3 = Random.Range(1, 7);
+        roll_res1 = UnityEngine.Random.Range(1, 7);
+        roll_res2 = UnityEngine.Random.Range(1, 7);
+        roll_res3 = UnityEngine.Random.Range(1, 7);
         switch (roll_res1)
         {
             case 1:
